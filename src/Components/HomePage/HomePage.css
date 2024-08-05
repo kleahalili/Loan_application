@@ -1,0 +1,141 @@
+/* 
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color:#dddddd;
+    
+  } */
+
+  .home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #dddddd; 
+    background-color: rgba(0, 0, 0, 0.2); 
+    backdrop-filter: blur(5px);
+  }
+  
+  .home-container h2 {
+    color: #eeeeee; 
+  }
+  
+  
+  .header {
+    background-color: rgba(0, 0, 0, 0.2); /* Transparent black color */
+    color: #eeeeee; /* Text color */
+    padding: 10px;
+    backdrop-filter: blur(5px); /* Add blur effect */
+  }
+  
+
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.2); /* Transparent black color */
+    color: #fff; /* Text color */
+    padding: 10px;
+    backdrop-filter: blur(5px); /* Add blur effect */
+  }
+  .navbar a {
+    border: 1px solid #fff;
+    padding: 5px 10px;
+  }
+  
+  .navbar a:hover {
+    background-color: #dddddd;
+    color: #000;
+    border: 0.1em;
+  }
+ 
+  
+  .navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+  justify-content: center;
+  }
+
+  .loan-table {
+    border-collapse: collapse;
+    width: 100%;
+    
+  }
+  
+  .loan-table th,
+  .loan-table td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .loan-table th {
+    background-color: rgba(0, 0, 0, 0.2); /* Transparent black color */
+    backdrop-filter: blur(5px); /* Add blur effect */
+    color:#dddddd;
+  }
+  
+
+ .loan-applications .loan-table button {
+  background-color: rgba(15, 15, 79, 0.645); 
+   color: #fff; /* White text color */
+  padding: 5px 10px;  
+   border: none;
+   cursor: pointer;
+   margin-right: 5px;
+ } 
+
+/* Change color of buttons on hover */
+/* .loan-applications .loan-table button:hover {
+  background-color: #0056b3; /* Darker blue color on hover */
+/* } */ 
+
+  .loan-applications h2 {
+    margin-bottom: 20px; /* Adjust the margin as needed */
+    color: #dddddd;
+  }
+  /* .loan-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+   */
+  .loan-table tr:hover {
+    background-color: transparent;
+  }
+  
+  
+  .navbar ul li {
+    display: inline;
+    /* margin-right: 20px; */
+    margin: 0 10px;
+  }
+  
+  .navbar ul li a {
+    color: #dddddd;
+    text-decoration: none;
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .credit-applications, .summary {
+    flex-basis: 48%;
+  }
+  
+  .footer {
+    margin-top: 20px;
+    background-color: transparent;
+    color: black;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* .footer {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.2); 
+    color: black;
+    padding: 10px;
+    text-align: center;
+    backdrop-filter: blur(5px); 
+  }
+   */

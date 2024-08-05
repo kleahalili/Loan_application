@@ -1,0 +1,53 @@
+
+
+.client-home-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .navbar li {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  .logout-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .main-content {
+    margin-bottom: 20px;
+  }
+  
+  .credit-applications ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .credit-applications li {
+    margin-bottom: 10px;
+  }
+  
+  .footer {
+    background-color: #f2f2f2;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  

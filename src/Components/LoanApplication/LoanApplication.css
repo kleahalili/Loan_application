@@ -1,0 +1,81 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.1); 
+  backdrop-filter: blur(5px); 
+}
+
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* header, */
+  footer {
+    background-color: #333;
+    color: transparent;
+    padding: 10px 20px;
+  }
+  
+  footer {
+    margin-top: auto;
+  }
+  
+  /* Credit Form styles */
+  .credit-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .credit-form h2 {
+    margin-bottom: 20px;
+  }
+  
+  .credit-form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .credit-form input,
+  .credit-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #dddddd; 
+  }
+  
+  
+  .credit-form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .credit-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .credit-form button[type='submit'] {
+    margin-top: 20px;
+  }
+  
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    .credit-form {
+      width: 90%;
+    }
+  }
+  
