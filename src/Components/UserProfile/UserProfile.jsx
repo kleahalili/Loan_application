@@ -31,7 +31,7 @@ function LoanApplication() {
           console.log("Modified");
           localStorage.removeItem("authToken");
           if (typeof window !== "undefined") {
-            window.location.href = "/"; // Replace '/' with your actual homepage URL if different
+            window.location.href = "/"; 
           }
         }
       })
@@ -41,7 +41,7 @@ function LoanApplication() {
   };
 
   useEffect(() => {
-    console.log(formData); // You can perform validation and submit to the database here
+    console.log(formData); 
     let url = "http://localhost:8080/api/v1/auth/user";
     let token = localStorage.getItem("authToken");
 

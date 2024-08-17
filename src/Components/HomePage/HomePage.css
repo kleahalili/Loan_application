@@ -1,6 +1,7 @@
+/* General Container for the Page */
 .home-container {
   max-width: 1400px; 
-  margin: 0 auto;
+  margin: 0 auto; /* Center the container horizontally */
   padding: 10px; 
   color: #dddddd;
   background-color: rgba(0, 0, 0, 0.3); 
@@ -8,34 +9,35 @@
   font-size: 22px; 
   border-radius: 15px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  margin-bottom: 280px;
+  text-align: center; 
 }
 
-
+/* Header Styling */
 .header {
   background-color: rgba(0, 0, 0, 0.5); 
   color: #ffffff;
-  padding: 0px; 
+  padding: 20px; 
   backdrop-filter: blur(8px);
-  font-size: 20px; 
-  text-align:center;
+  font-size: 19px; 
+  text-align: center;
   border-radius: 15px;
   margin-bottom: 10px; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
- 
 }
 
-
+/* Navigation Bar Styling */
 .navbar {
   background-color: rgba(0, 0, 0, 0.4);
   color: #ffffff;
-  padding: 20px;
+  padding: 10px;
   backdrop-filter: blur(8px);
   font-size: 22px; 
   display: flex;
   justify-content: center;
   gap: 20px; 
   border-radius: 15px; 
-  margin-bottom: 30px; 
+  margin-bottom: 40px; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
@@ -56,15 +58,16 @@
   border-color: #000000; 
 }
 
-
+/* Loan Table Styling */
 .loan-table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 20px; 
+  font-size: 15px; 
   margin-top: 20px;
   background-color: rgba(255, 255, 255, 0.1); 
   border-radius: 10px; 
   overflow: hidden; 
+  margin-bottom: 50px;
 }
 
 .loan-table th,
@@ -81,14 +84,15 @@
   font-size: 16px; 
 }
 
+/* Buttons inside the Loan Table */
 .loan-applications .loan-table button {
-  background-color: rgba(75, 75, 133, 0.8);
+  background-color: lightslategray;
   color: #ffffff;
-  padding: 5px 6px; 
-  font-size: 20px; 
+  padding: 2px 10px; 
+  font-size: 17px; 
   border: none;
   cursor: pointer;
-  margin-right: 10px; 
+  margin-right: 1px; 
   border-radius: 8px; 
   transition: background-color 0.3s, transform 0.3s; 
 }
@@ -98,19 +102,21 @@
   transform: scale(1.05); 
 }
 
-
+/* Section Headings */
 .home-container h2,
 .loan-applications h2 {
   color: #ffffff;
-  font-size: 25px; 
+  font-size: 19px; 
   text-align: center; 
-  margin-bottom: 20px; 
+  margin-bottom: 10px; 
 }
 
+/* Table Row Hover Effect */
 .loan-table tr:hover {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Navigation Bar List Styling */
 .navbar ul {
   list-style-type: none;
   padding: 0;
@@ -123,18 +129,26 @@
   margin: 0; 
 }
 
+/* Footer Styling */
 .footer {
-margin-top: 30px; 
-background-color: rgba(255, 255, 255, 0.1) !important; /* Lighter, semi-transparent background */
-color: #ffffff; /* Ensure text remains visible */
-padding: 15px; 
-text-align: center;
-font-size: 18px; 
-border-radius: 10px; /* Rounded corners */
-box-shadow: none; /* Remove shadow */
-width: fit-content;
-/* backdrop-filter: blur(3px);  */
-margin: 30px auto 0;
-border: 2px solid transparent; /* Ensure no borders interfere */
-transition: background-color 0.3s, color 0.3s
+  margin-top: 30px; 
+  background-color: rgba(255, 255, 255, 0.1) !important; /* Lighter, semi-transparent background */
+  color: #ffffff; 
+  padding: 15px; 
+  text-align: center;
+  font-size: 18px; 
+  border-radius: 10px; 
+  box-shadow: none; /* Remove shadow */
+  width: fit-content;
+  margin: 30px auto 0;
+  border: 2px solid transparent; /* Ensure no borders interfere */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* General body and html styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }

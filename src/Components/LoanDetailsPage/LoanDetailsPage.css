@@ -1,0 +1,85 @@
+.loan-details-container {
+  max-width: 100%; 
+  margin: 0 auto;
+  padding: 15px; 
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #dddddd;
+  margin-bottom: 460px; 
+}
+
+.loan-details-container h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-size: 28px;
+}
+
+
+.header { 
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: #ffffff;
+  padding:10px; 
+  backdrop-filter: blur(8px);
+  font-size: 19px; 
+  text-align: center;
+  border-radius: 15px;
+  margin-bottom: 20px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.navbar {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  font-size: 22px; 
+  display: flex;
+  justify-content: center;
+  gap: 20px; 
+  border-radius: 15px; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+
+
+.loan-details-table {
+  width: 100%; 
+  border-collapse: collapse;
+  font-size: 14px; 
+  margin-top: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.loan-details-table th,
+.loan-details-table td {
+  padding: 5px 8px;
+  border: 1px solid #dddddd;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.loan-details-table th {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.loan-details-table td {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.loan-details-table tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.loan-details-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.15);
+}

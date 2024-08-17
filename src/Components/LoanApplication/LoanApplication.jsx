@@ -162,7 +162,7 @@ function LoanApplication() {
                 <option value="Pa Arsim">Pa Arsim</option>
                 <option value="Arsim Fillor">Arsim Fillor</option>
                 <option value="Shkolle e Mesme">Shkolle e Mesme</option>
-                <option value="Arsim I Larte">Arsim I Larte</option>
+                <option value="Arsim I Larte">Arsim i Larte</option>
                 <option value="Doktorature">Doktorature</option>
               </select>
             </label>

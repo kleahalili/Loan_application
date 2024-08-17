@@ -5,11 +5,12 @@ import HomePage from "./Components/HomePage/HomePage";
 import NavBar from "./Components/NavBar/NavBar";
 import LoanApplication from "./Components/LoanApplication/LoanApplication";
 import UserProfile from "./Components/UserProfile/UserProfile";
-import StatisticsPage from "./Components/StatisticsPage/StatisticsPage";  // Import the Statistics page
+import StatisticsPage from "./Components/StatisticsPage/StatisticsPage"; 
+import LoanDetailsPage from "./Components/LoanDetailsPage/LoanDetailsPage"; // Import the LoanDetails page
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // Add this state
+  const [isAdmin, setIsAdmin] = useState(false); 
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
@@ -17,7 +18,6 @@ function App() {
 
     if (isUserLoggedIn) {
       setIsAuthenticated(true);
-      // Fetch user details to check if the user is admin
       fetchUserDetails(storedToken);
     }
   }, []);
@@ -102,6 +102,19 @@ function App() {
                 <>
                   <NavBar isAdmin={isAdmin} />
                   <StatisticsPage />
+                </>
+              ) : (
+                <LoginRegister onSuccessfulLogin={() => setIsAuthenticated(true)} />
+              )
+            }
+          />
+          <Route
+            path="/loan-details/:applicationId" // New route for loan details page
+            element={
+              isAuthenticated && isAdmin ? (
+                <>
+                  <NavBar isAdmin={isAdmin} />
+                  <LoanDetailsPage />
                 </>
               ) : (
                 <LoginRegister onSuccessfulLogin={() => setIsAuthenticated(true)} />

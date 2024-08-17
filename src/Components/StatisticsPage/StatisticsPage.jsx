@@ -17,6 +17,7 @@ function StatisticsPage() {
     applied: 0,
     approved: 0,
     rejected: 0,
+    documentsRequested: 0, 
   });
 
   useEffect(() => {
@@ -39,23 +40,26 @@ function StatisticsPage() {
   }, []);
 
   const data = {
-    labels: ["Applied", "Approved", "Rejected"],
+    labels: ["Applied", "Approved", "Rejected", "Documents Requested"], 
     datasets: [
       {
         data: [
           statistics.applied,
           statistics.approved,
           statistics.rejected,
+          statistics.documentsRequested, 
         ],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
           "rgba(75, 192, 192, 0.2)",
+          "rgba(255, 206, 86, 0.2)", 
         ],
         borderColor: [
           "rgba(255, 99, 132, 1)",
           "rgba(54, 162, 235, 1)",
           "rgba(75, 192, 192, 1)",
+          "rgba(255, 206, 86, 1)", 
         ],
         borderWidth: 1,
       },
@@ -66,7 +70,7 @@ function StatisticsPage() {
     responsive: true,
     plugins: {
       legend: {
-        display: false, // Remove the legend
+        display: false, 
       },
       title: {
         display: true,
@@ -77,17 +81,21 @@ function StatisticsPage() {
       y: {
         beginAtZero: true,
         ticks: {
-          stepSize: 1, 
+          stepSize: 1,
         },
       },
     },
   };
 
   return (
-    <div className="statistics-container">
-      <h2>Loan Application Statistics</h2>
-      <div className="chart-container">
-        <Bar data={data} options={options} />
+    <div className="statistics-page">
+      <div className="background-blur"></div>
+      <div className="overlay"></div>
+      <div className="content">
+        <h2>Loan Application Statistics</h2>
+        <div className="chart-container">
+          <Bar data={data} options={options} />
+        </div>
       </div>
     </div>
   );

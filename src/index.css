@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -13,8 +13,98 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url('./Components/Assets/bg2.webp') no-repeat;
-  background-size: cover;
-  background-position: center;
+  position: relative;
+  overflow: hidden;
 }
 
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('./Components/Assets/bg2.webp') no-repeat center center / cover;
+  filter: blur(25px); 
+  opacity: 1; 
+  z-index: -1; /* Place it behind the content */
+}
+
+.wrapper {
+  position: relative;
+  width: 600px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  text-align: left;
+  z-index: 1; /* Keep content above the background */
+  transition: all 0.3s ease;
+}
+
+.wrapper.active {
+  height: auto;
+}
+
+form h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
+form .input-box {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.input-box input::placeholder {
+  color:white ;
+}
+
+form button {
+  width: 100%;
+  padding: 15px;
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #0056b3;
+}
+
+form .register-link {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-link p a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}

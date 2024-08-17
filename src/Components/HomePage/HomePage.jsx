@@ -83,6 +83,38 @@ const HomePage = () => {
       });
   };
 
+  const handleDownloadDocument = (applicationId) => {
+    let token = localStorage.getItem("authToken");
+    let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}/download-document`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.blob();
+        } else {
+          throw new Error("Failed to download document. Please try again.");
+        }
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `document_${applicationId}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
   const handleRequestDocumentUpload = (applicationId) => {
     let token = localStorage.getItem("authToken");
     let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}/request-document`;
@@ -97,7 +129,7 @@ const HomePage = () => {
       .then((response) => {
         if (response.ok) {
           alert("Document request sent.");
-          setStatusChangeCount(statusChangeCount + 1); // To refresh the list and show the updated status
+          setStatusChangeCount(statusChangeCount + 1);
         } else {
           alert("Failed to request document. Please try again.");
         }
@@ -127,7 +159,7 @@ const HomePage = () => {
         .then((response) => {
           if (response.ok) {
             alert("Document uploaded successfully!");
-            setStatusChangeCount(statusChangeCount + 1); // Refresh the list
+            setStatusChangeCount(statusChangeCount + 1);
           } else {
             alert("Failed to upload document. Please try again.");
           }
@@ -137,6 +169,41 @@ const HomePage = () => {
           alert("An error occurred. Please try again.");
         });
     }
+  };
+
+  const handleDeleteApplication = (applicationId) => {
+    const application = loanApplications.find(app => app.applicationId === applicationId);
+
+    if (application.applicationStatus === "Applied") {
+      let token = localStorage.getItem("authToken");
+      let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}`;
+
+      fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("Application deleted successfully!");
+            setStatusChangeCount(statusChangeCount + 1);
+          } else {
+            alert("Failed to delete application. Please try again.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred. Please try again.");
+        });
+    } else {
+      alert("Application can only be deleted when its status is 'Applied'.");
+    }
+  };
+
+  const handleViewUserInfo = (applicationId) => {
+    window.location.href = `/loan-details/${applicationId}`;
   };
 
   return (
@@ -157,6 +224,9 @@ const HomePage = () => {
                 <th>Status</th>
                 {isAdmin && <th>Actions</th>}
                 <th>Manage Documents</th>
+                {isAdmin && <th>Download Document</th>}
+                {isAdmin && <th>Show User Info</th>}
+                {!isAdmin && <th>Delete</th>}
               </tr>
             </thead>
             <tbody>
@@ -172,71 +242,119 @@ const HomePage = () => {
                       {new Date(application.submittedAt).toLocaleDateString()}
                     </td>
                     <td>{application.applicationStatus}</td>
-                    {isAdmin && (
-                      <td>
-                        {application.applicationStatus === "Applied" && (
-                          <>
-                            <button
-                              onClick={() =>
-                                handleStatusChange(
-                                  application.applicationId,
-                                  "Approved"
-                                )
-                              }
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleStatusChange(
-                                  application.applicationId,
-                                  "Rejected"
-                                )
-                              }
-                            >
-                              Reject
-                            </button>
-                          </>
-                        )}
-                      </td>
-                    )}
-                    <td>
-                      {isAdmin && application.documentUploaded === false && (
-                        <button
-                          onClick={() =>
-                            handleRequestDocumentUpload(
-                              application.applicationId
-                            )
-                          }
-                        >
-                          Request Document Upload
-                        </button>
-                      )}
-                      {!isAdmin && application.documentUploaded === true && (
-                        <>
-                          <label
-                            htmlFor={`file-upload-${application.applicationId}`}
-                            className="upload-button"
-                          >
-                            Upload Document
-                          </label>
-                          <input
-                            id={`file-upload-${application.applicationId}`}
-                            type="file"
-                            accept=".pdf, .docx"
-                            style={{ display: "none" }}
-                            onChange={(event) =>
-                              handleFileUpload(application.applicationId, event)
+                    {isAdmin ? (
+                      <>
+                        <td>
+                          {application.applicationStatus === "Applied" ||
+                          application.applicationStatus === "Documents Requested" ? (
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleStatusChange(
+                                    application.applicationId,
+                                    "Approved"
+                                  )
+                                }
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleStatusChange(
+                                    application.applicationId,
+                                    "Rejected"
+                                  )
+                                }
+                              >
+                                Reject
+                              </button>
+                            </>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() =>
+                              handleRequestDocumentUpload(
+                                application.applicationId
+                              )
                             }
-                          />
-                        </>
-                      )}
-                    </td>
+                          >
+                            Request Document Upload
+                          </button>
+                        </td>
+                        <td>
+                          {application.documentUploaded ? (
+                            <button
+                              onClick={() =>
+                                handleDownloadDocument(
+                                  application.applicationId
+                                )
+                              }
+                            >
+                              Download Document
+                            </button>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() =>
+                              handleViewUserInfo(application.applicationId)
+                            }
+                          >
+                            Show User Info
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>
+                          {application.applicationStatus ===
+                          "Documents Requested" &&
+                          !application.documentUploaded ? (
+                            <>
+                              <label
+                                htmlFor={`file-upload-${application.applicationId}`}
+                                className="upload-button"
+                              >
+                                Upload Document
+                              </label>
+                              <input
+                                id={`file-upload-${application.applicationId}`}
+                                type="file"
+                                accept=".pdf, .docx"
+                                style={{ display: "none" }}
+                                onChange={(event) =>
+                                  handleFileUpload(
+                                    application.applicationId,
+                                    event
+                                  )
+                                }
+                              />
+                            </>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() =>
+                              handleDeleteApplication(application.applicationId)
+                            }
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={isAdmin ? "9" : "7"}>
+                  <td colSpan={isAdmin ? "12" : "8"}>
                     No loan applications available.
                   </td>
                 </tr>
