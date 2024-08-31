@@ -1,49 +1,50 @@
-/* Credit Form Styles */
 .credit-form {
-  max-width: 1400px; 
-  margin: 10px auto;
-  padding: 10px; 
-  border: 1px solid #ccc;
-  border-radius: 5px; 
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-  color: #ffffff;
-  max-height: 80vh; 
-  overflow-y: auto; 
-  margin-bottom: 250px;
+  width: 100%;
+  max-width: 850px; /* Slightly increase max-width */
+  margin: 10px auto; /* Add a bit more top margin */
+  padding: 25px; /* Slightly increase padding */
+  background-color: #f4f4f4;
+  color: #333;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: calc(100vh - 150px); /* Ensure form height fits without scrolling */
 }
 
 .credit-form h2 {
-  margin-bottom: 10px; 
-  font-size: 22px; 
+  margin-bottom: 18px; /* Add a bit more space below the title */
+  font-size: 24px; /* Maintain current title font size */
+  color: #333;
+  text-align: center;
 }
 
 .credit-form label {
   display: block;
-  margin-bottom: 4px; 
+  margin-bottom: 12px; /* Increase space between label and input */
+  font-size: 16px;
+  color: #333;
 }
 
 .credit-form input,
 .credit-form select {
   width: 100%;
-  padding: 6px; 
-  margin-top: 4px;
-  margin-bottom: 6px; 
+  padding: 9px; /* Add a bit more padding inside the input fields */
+  margin-bottom: 10px; /* Increase space between input fields */
   border: 1px solid #ccc;
-  border-radius: 4px; 
+  border-radius: 4px;
   box-sizing: border-box;
-  background-color: #dddddd;
-  font-size: 14px; 
+  font-size: 16px;
 }
 
 .credit-form button {
-  background-color: rgb(134, 136, 150);
+  background-color: #007bff;
   color: #fff;
-  padding: 6px 12px; 
+  padding: 12px 16px; /* Slightly increase padding for buttons */
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .credit-form button:hover {
@@ -53,32 +54,17 @@
 .form-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px; 
-}
-
-.back-button, .submit-button {
-  padding: 6px 12px; 
-  font-size: 14px; 
-  margin: 0 5px; 
-}
-
-.back-button {
-  background-color: #6c757d;
-}
-
-.submit-button {
-  background-color: #007bff;
+  margin-top: 7px; /* Maintain current spacing above buttons */
 }
 
 .show-more-button {
   background-color: #28a745;
   color: #fff;
-  padding: 6px 12px; 
+  padding: 6px 5px; /* Slightly increase padding */
   border: none;
-  border-radius: 4px; 
+  border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 10px; 
-  font-size: 14px; 
+  font-size: 16px;
 }
 
 .show-more-button:hover {
@@ -88,6 +74,8 @@
 /* Media query for smaller screens */
 @media (max-width: 768px) {
   .credit-form {
-    width: 90%;
+    width: 100%;
+    margin-left: 0;
+    min-height: calc(100vh - 150px);
   }
 }

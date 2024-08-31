@@ -1,134 +1,109 @@
-.wrapper {
-    position: relative;
-    width: 600px; 
-    height: 700px; 
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.2); 
-    backdrop-filter: blur(30px);
-    border-radius: 20px; 
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); 
-    color: #fff;
+.login-container {
     display: flex;
+    height: 100vh;
     align-items: center;
-    overflow: hidden;
-    transition: height 0.3s ease; 
-}
-
-.wrapper.active {
-    height: 800px; 
-}
-
-.wrapper .form-box {
-    width: 100%;
-    padding: 60px; 
-}
-
-.wrapper .form-box.login {
-    transition: translate 0.2s ease;
-    translate: 0;
-}
-
-.wrapper.active .form-box.login {
-    transition: none;
-    translate: -600px; 
-}
-
-.wrapper .form-box.register {
-    position: absolute;
-    transition: none;
-    translate: 600px; 
-}
-
-.wrapper.active .form-box.register {
-    transition: translate 0.2s ease;
-    translate: 0;
-}
-
-form h1 {
-    font-size: 48px; 
+    justify-content: center;
+    background-color: #f5f5f5;
+    margin-right: 160px;
+  }
+  
+  .form-box {
+    background: white;
+    padding: 50px; /* Increased padding for a larger form */
+    border-radius: 15px; /* Slightly increased border-radius */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-bottom: 30px; 
-}
-
-form .input-box {
+    max-width: 450px; /* Increased max-width */
+    width: 100%;
+    position: relative;
+  }
+  
+  .logo-container {
+    width: 110px; /* Increased size */
+    height: 110px; /* Increased size */
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    top: -55px; /* Adjusted position */
+    left: calc(50% - 55px); /* Centered */
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo-container img {
+    width: 90px; /* Adjusted size */
+    height: 90px; /* Adjusted size */
+    border-radius: 50%;
+  }
+  
+  h2 {
+    margin-top: 70px; /* Adjusted margin for better spacing */
+    font-size: 26px; /* Increased font-size */
+    color: #333;
+  }
+  
+  p {
+    font-size: 16px; /* Slightly increased font-size */
+    color: #666;
+    margin-bottom: 25px; /* Increased margin */
+  }
+  
+  .input-box {
     position: relative;
     width: 100%;
-    height: 70px; 
-    margin: 40px 0; 
-}
-
-.input-box input {
+    margin: 25px 0; /* Increased margin */
+  }
+  
+  .input-box input {
     width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
+    height: 45px; /* Increased height */
+    background: #f0f0f0;
+    border: 2px solid #ccc;
     outline: none;
-    border: 2px solid rgba(255, 255, 255, 0.3); 
-    border-radius: 50px; 
-    font-size: 20px; 
-    color: #fff;
-    padding: 25px 70px 25px 25px; 
-}
-
-.input-box input::placeholder {
-    color: #ddd;
-}
-
-.input-box .icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    translate: 0 -50%;
-    font-size: 24px; 
-}
-
-form .remember-forgot {
-    display: flex;
-    justify-content: space-between;
-    font-size: 18px; 
-    margin: -10px 0 25px; 
-}
-
-.remember-forgot label input {
-    accent-color: #fff;
-    margin-right: 6px; 
-}
-
-.remember-forgot a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.remember-forgot a:hover {
-    text-decoration: underline;
-}
-
-form button {
-    width: 100%;
-    height: 60px; 
-    background: #fff;
-    border: none;
-    outline: none;
-    border-radius: 50px; 
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); 
-    cursor: pointer;
-    font-size: 20px; 
+    border-radius: 5px;
+    font-size: 16px; /* Increased font-size */
     color: #333;
-    font-weight: 700;
-}
-
-form .register-link {
-    font-size: 18px; 
-    text-align: center;
-    margin: 30px 0 20px; 
-}
-
-.register-link p a {
-    color: #fff;
+    padding: 0 15px; /* Increased padding */
+  }
+  
+  .remember-forgot {
+    text-align: right;
+    margin: 15px 0; /* Adjusted margin */
+  }
+  
+  .remember-forgot a {
+    color: #666;
     text-decoration: none;
-    font-weight: 700; 
-}
-
-.register-link p a:hover {
-    text-decoration: underline;
-}
+  }
+  
+  form button {
+    width: 100%;
+    height: 50px; /* Increased height */
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* Increased font-size */
+    color: white;
+    font-weight: bold;
+  }
+  
+  .register-link {
+    font-size: 16px; /* Slightly increased font-size */
+    margin-top: 25px; /* Increased margin */
+    color: #333;
+  }
+  
+  .register-link p a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  

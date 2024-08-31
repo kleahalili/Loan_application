@@ -1,119 +1,42 @@
 .statistics-page {
   position: relative;
   height: 100vh;
-  width: 100%;
-  overflow: hidden;
-}
-
-
-.header {
-  margin-top: 250px; 
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
-  padding: 10px 0;
-  font-size: 22px;
-  text-align: center;
-}
-
-.background-blur {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60%; 
-  /* background-image: url('../../Components/Assets/bg2.webp'); */
-  background-size: cover;
-  background-position: center;
-  filter: blur(10px); 
-  z-index: 1; 
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60%; 
-  background-color: rgba(0, 0, 0, 0.5); 
-  z-index: 2; 
+  width: calc(100% - 140px); /* Adjust width to account for the navbar */
+  margin-left: 140px; /* Push content away from the navbar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
 }
 
 .content {
-  position: relative;
-  z-index: 20; 
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 70px;
-  color: #ffffff;
-  text-align: center;
-}
-
-.statistics-container {
-  max-width: 600px; 
-  margin: 0 auto;
-  padding: 50px;
-  background-color: rgba(0, 0, 0, 0.5); 
-  color: #ffffff;
+  max-width: 800px; /* Adjust the max-width for the content */
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
-  backdrop-filter: blur(70px); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  margin-right: 130px;
 }
 
 .chart-container {
-  max-width: 600px; 
-  margin: 20px auto 0; 
-  filter: brightness(1.2) contrast(1.2); 
+  width: 100%; /* Fit the chart within the content */
+  height: 400px; /* Set a fixed height for the chart */
 }
 
 h2 {
-  text-align: center;
-  color: #ffffff;
+  font-size: 24px;
+  color: #333;
   margin-bottom: 20px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); 
 }
 
-.footer {
-  margin-top: 30px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 15px;
-  text-align: center;
-  font-size: 18px;
-  border-radius: 10px;
-  box-shadow: none;
-  width: fit-content;
-  margin: 30px auto 0;
-  border: 2px solid transparent;
-  transition: background-color 0.3s, color 0.3s;
-}
+@media (max-width: 768px) {
+  .content {
+    max-width: 90%;
+  }
 
-.statistics-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.statistics-table th,
-.statistics-table td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #dddddd;
-}
-
-.statistics-table th {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  text-align: center;
-}
-
-.statistics-table td {
-  background-color: rgba(255, 255, 255, 0.1);
-  text-align: center;
-}
-
-.chart-title {
-  text-align: center;
-  font-size: 20px;
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); 
+  .chart-container {
+    height: 300px; /* Adjust for smaller screens */
+  }
 }

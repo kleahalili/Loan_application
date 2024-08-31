@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./NavBar.css";
+import bktLogo from "../Assets/bkt.jpg"; // Corrected path to the image
 
 function NavBar({ isAdmin }) {
   const logout = () => {
@@ -11,11 +13,11 @@ function NavBar({ isAdmin }) {
   };
 
   return (
-    <div>
-      <header className="header">
-        <h1>Welcome to X Bank</h1>
+    <div className="sidebar">
+      <header className="sidebar-header">
+        <h1> Welcome to X Bank</h1>
       </header>
-      <nav className="navbar">
+      <nav className="sidebar-nav">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -38,6 +40,9 @@ function NavBar({ isAdmin }) {
           </li>
         </ul>
       </nav>
+      <footer className="sidebar-footer">
+        <img src={bktLogo} alt="BKT Logo" className="sidebar-logo" />
+      </footer>
     </div>
   );
 }

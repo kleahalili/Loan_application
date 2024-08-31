@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [lastLogin, setLastLogin] = useState("");
   const [loanApplications, setLoanApplications] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -9,8 +11,13 @@ const HomePage = () => {
   const [userFullName, setUserFullName] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     let url = "http://localhost:8080/api/v1/loan-applications";
-    let token = localStorage.getItem("authToken");
     fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -20,11 +27,24 @@ const HomePage = () => {
       .then((response) => {
         if (response.status === 200) {
           return response.json();
+        } else if (response.status === 403) {
+          navigate("/login"); // If unauthorized, redirect to login
         }
       })
       .then((data) => {
-        console.log(data);
-        setLoanApplications(data);
+        // Sort loan applications to prioritize "Applied" and "Documents Requested" statuses
+        const sortedData = data.sort((a, b) => {
+          const statusOrder = {
+            "Applied": 1,
+            "Documents Requested": 2,
+            "Approved": 3,
+            "Rejected": 4,
+          };
+
+          return (statusOrder[a.applicationStatus] || 5) - (statusOrder[b.applicationStatus] || 5);
+        });
+
+        setLoanApplications(sortedData);
       })
       .catch((err) => {
         console.error(err);
@@ -41,6 +61,8 @@ const HomePage = () => {
       .then((response) => {
         if (response.status === 200) {
           return response.json();
+        } else if (response.status === 403) {
+          navigate("/login"); // If unauthorized, redirect to login
         }
       })
       .then((data) => {
@@ -61,26 +83,33 @@ const HomePage = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [statusChangeCount]);
+  }, [statusChangeCount, navigate]);
 
-  const handleStatusChange = (id, status) => {
-    let token = localStorage.getItem("authToken");
-    let url = `http://localhost:8080/api/v1/loan-applications/${id}?status=${status}`;
-    fetch(url, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setStatusChangeCount(statusChangeCount + 1);
-        }
+  const handleDeleteApplication = (applicationId) => {
+    if (window.confirm("Are you sure you want to delete this application?")) {
+      let token = localStorage.getItem("authToken");
+      let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}`;
+
+      fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       })
-      .catch((err) => {
-        console.error(err);
-      });
+        .then((response) => {
+          if (response.status === 204) {
+            alert("Application deleted successfully!");
+            setStatusChangeCount(statusChangeCount + 1);
+          } else {
+            alert("Failed to delete application.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred. Please try again.");
+        });
+    }
   };
 
   const handleDownloadDocument = (applicationId) => {
@@ -115,31 +144,6 @@ const HomePage = () => {
       });
   };
 
-  const handleRequestDocumentUpload = (applicationId) => {
-    let token = localStorage.getItem("authToken");
-    let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}/request-document`;
-
-    fetch(url, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          alert("Document request sent.");
-          setStatusChangeCount(statusChangeCount + 1);
-        } else {
-          alert("Failed to request document. Please try again.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("An error occurred. Please try again.");
-      });
-  };
-
   const handleFileUpload = (applicationId, event) => {
     const file = event.target.files[0];
     if (file) {
@@ -159,7 +163,7 @@ const HomePage = () => {
         .then((response) => {
           if (response.ok) {
             alert("Document uploaded successfully!");
-            setStatusChangeCount(statusChangeCount + 1);
+            setStatusChangeCount(statusChangeCount + 1); // Refresh the list to show the updated document status
           } else {
             alert("Failed to upload document. Please try again.");
           }
@@ -169,41 +173,6 @@ const HomePage = () => {
           alert("An error occurred. Please try again.");
         });
     }
-  };
-
-  const handleDeleteApplication = (applicationId) => {
-    const application = loanApplications.find(app => app.applicationId === applicationId);
-
-    if (application.applicationStatus === "Applied") {
-      let token = localStorage.getItem("authToken");
-      let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}`;
-
-      fetch(url, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            alert("Application deleted successfully!");
-            setStatusChangeCount(statusChangeCount + 1);
-          } else {
-            alert("Failed to delete application. Please try again.");
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("An error occurred. Please try again.");
-        });
-    } else {
-      alert("Application can only be deleted when its status is 'Applied'.");
-    }
-  };
-
-  const handleViewUserInfo = (applicationId) => {
-    window.location.href = `/loan-details/${applicationId}`;
   };
 
   return (
@@ -222,11 +191,10 @@ const HomePage = () => {
                 <th>Loan Duration (months)</th>
                 <th>Submit Date</th>
                 <th>Status</th>
-                {isAdmin && <th>Actions</th>}
-                <th>Manage Documents</th>
-                {isAdmin && <th>Download Document</th>}
-                {isAdmin && <th>Show User Info</th>}
+                {!isAdmin && <th>Upload Document</th>}
                 {!isAdmin && <th>Delete</th>}
+                {isAdmin && <th>Detailed View</th>}
+                {isAdmin && <th>Download Document</th>}
               </tr>
             </thead>
             <tbody>
@@ -242,79 +210,10 @@ const HomePage = () => {
                       {new Date(application.submittedAt).toLocaleDateString()}
                     </td>
                     <td>{application.applicationStatus}</td>
-                    {isAdmin ? (
+                    {!isAdmin && (
                       <>
                         <td>
-                          {application.applicationStatus === "Applied" ||
-                          application.applicationStatus === "Documents Requested" ? (
-                            <>
-                              <button
-                                onClick={() =>
-                                  handleStatusChange(
-                                    application.applicationId,
-                                    "Approved"
-                                  )
-                                }
-                              >
-                                Approve
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleStatusChange(
-                                    application.applicationId,
-                                    "Rejected"
-                                  )
-                                }
-                              >
-                                Reject
-                              </button>
-                            </>
-                          ) : (
-                            "N/A"
-                          )}
-                        </td>
-                        <td>
-                          <button
-                            onClick={() =>
-                              handleRequestDocumentUpload(
-                                application.applicationId
-                              )
-                            }
-                          >
-                            Request Document Upload
-                          </button>
-                        </td>
-                        <td>
-                          {application.documentUploaded ? (
-                            <button
-                              onClick={() =>
-                                handleDownloadDocument(
-                                  application.applicationId
-                                )
-                              }
-                            >
-                              Download Document
-                            </button>
-                          ) : (
-                            "N/A"
-                          )}
-                        </td>
-                        <td>
-                          <button
-                            onClick={() =>
-                              handleViewUserInfo(application.applicationId)
-                            }
-                          >
-                            Show User Info
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td>
-                          {application.applicationStatus ===
-                          "Documents Requested" &&
-                          !application.documentUploaded ? (
+                          {application.applicationStatus === "Documents Requested" && !application.documentUploaded ? (
                             <>
                               <label
                                 htmlFor={`file-upload-${application.applicationId}`}
@@ -328,10 +227,7 @@ const HomePage = () => {
                                 accept=".pdf, .docx"
                                 style={{ display: "none" }}
                                 onChange={(event) =>
-                                  handleFileUpload(
-                                    application.applicationId,
-                                    event
-                                  )
+                                  handleFileUpload(application.applicationId, event)
                                 }
                               />
                             </>
@@ -340,21 +236,51 @@ const HomePage = () => {
                           )}
                         </td>
                         <td>
-                          <button
-                            onClick={() =>
-                              handleDeleteApplication(application.applicationId)
-                            }
-                          >
-                            Delete
-                          </button>
+                          {application.applicationStatus === "Applied" ? (
+                            <button
+                              onClick={() =>
+                                handleDeleteApplication(application.applicationId)
+                              }
+                            >
+                              Delete
+                            </button>
+                          ) : (
+                            "N/A"
+                          )}
                         </td>
                       </>
+                    )}
+                    {isAdmin && (
+                      <td>
+                        <button
+                          onClick={() =>
+                            navigate(`/loan-details/${application.applicationId}`)
+                          }
+                        >
+                          Detailed View
+                        </button>
+                      </td>
+                    )}
+                    {isAdmin && (
+                      <td>
+                        {application.documentUploaded ? (
+                          <button
+                            onClick={() =>
+                              handleDownloadDocument(application.applicationId)
+                            }
+                          >
+                            Download Document
+                          </button>
+                        ) : (
+                          <button disabled>No Document</button>
+                        )}
+                      </td>
                     )}
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={isAdmin ? "12" : "8"}>
+                  <td colSpan={isAdmin ? "10" : "8"}>
                     No loan applications available.
                   </td>
                 </tr>

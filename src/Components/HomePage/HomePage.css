@@ -1,154 +1,124 @@
-/* General Container for the Page */
-.home-container {
-  max-width: 1400px; 
-  margin: 0 auto; /* Center the container horizontally */
-  padding: 10px; 
-  color: #dddddd;
-  background-color: rgba(0, 0, 0, 0.3); 
-  backdrop-filter: blur(8px);
-  font-size: 22px; 
-  border-radius: 15px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  margin-bottom: 280px;
-  text-align: center; 
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Header Styling */
-.header {
-  background-color: rgba(0, 0, 0, 0.5); 
-  color: #ffffff;
-  padding: 20px; 
-  backdrop-filter: blur(8px);
-  font-size: 19px; 
-  text-align: center;
-  border-radius: 15px;
-  margin-bottom: 10px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-}
-
-/* Navigation Bar Styling */
-.navbar {
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
-  padding: 10px;
-  backdrop-filter: blur(8px);
-  font-size: 22px; 
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f0f0f0;
   display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+}
+
+.home-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin: 0 auto; /* Center the container horizontally */
+  width: 80%; /* Adjust width as needed to center the content more */
+  margin-top: 2px;
+  margin-bottom: 90px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 20px; 
-  border-radius: 15px; 
-  margin-bottom: 40px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
-}
-
-.navbar a {
-  border: 2px solid #ffffff; 
-  padding: 15px 25px; 
-  font-size: 20px; 
-  border-radius: 8px; 
-  background-color: rgba(255, 255, 255, 0.1); 
-  text-decoration: none; 
-  color: #ffffff;
-  transition: background-color 0.3s, color 0.3s; 
-}
-
-.navbar a:hover {
-  background-color: #ffffff; 
-  color: #000000; 
-  border-color: #000000; 
-}
-
-/* Loan Table Styling */
-.loan-table {
-  border-collapse: collapse;
   width: 100%;
-  font-size: 15px; 
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.1); 
-  border-radius: 10px; 
-  overflow: hidden; 
-  margin-bottom: 50px;
+  padding-bottom: 20px;
+  
+}
+
+.loan-applications {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.loan-applications h2 {
+  font-size: 24px;
+  color: #333;
+  margin-top: 10px;
+  margin-top: 140px;
+}
+
+.loan-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  table-layout: auto;
 }
 
 .loan-table th,
 .loan-table td {
-  border: 1px solid #dddddd; 
-  padding: 2px; 
-  text-align: center; 
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  text-align: left;
 }
 
 .loan-table th {
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(5px);
-  color: #ffffff;
-  font-size: 16px; 
+  background-color: #007bff;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
-/* Buttons inside the Loan Table */
-.loan-applications .loan-table button {
-  background-color: lightslategray;
-  color: #ffffff;
-  padding: 2px 10px; 
-  font-size: 17px; 
-  border: none;
-  cursor: pointer;
-  margin-right: 1px; 
-  border-radius: 8px; 
-  transition: background-color 0.3s, transform 0.3s; 
+.loan-table td {
+  background-color: #ffffff;
+  color: #333;
 }
 
-.loan-applications .loan-table button:hover {
-  background-color: #0a0a52; 
-  transform: scale(1.05); 
+.loan-table tr:nth-child(even) td {
+  background-color: #f9f9f9;
 }
 
-/* Section Headings */
-.home-container h2,
-.loan-applications h2 {
-  color: #ffffff;
-  font-size: 19px; 
-  text-align: center; 
-  margin-bottom: 10px; 
+.loan-table tr:hover td {
+  background-color: #e9e9e9;
 }
 
-/* Table Row Hover Effect */
-.loan-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Navigation Bar List Styling */
-.navbar ul {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px; 
-}
-
-.navbar ul li {
-  margin: 0; 
-}
-
-/* Footer Styling */
 .footer {
-  margin-top: 30px; 
-  background-color: rgba(255, 255, 255, 0.1) !important; /* Lighter, semi-transparent background */
-  color: #ffffff; 
-  padding: 15px; 
-  text-align: center;
-  font-size: 18px; 
-  border-radius: 10px; 
-  box-shadow: none; /* Remove shadow */
-  width: fit-content;
-  margin: 30px auto 0;
-  border: 2px solid transparent; /* Ensure no borders interfere */
-  transition: background-color 0.3s, color 0.3s;
+  text-align: center; /* Center the text */
+  width: 100%;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+  position: sticky;
+  bottom: 0;
+  background: #f0f0f0;
+  z-index: 2;
+  margin-top: 20px;
 }
 
-/* General body and html styles */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+.loan-table button {
+  padding: 6px 10px;
+  background-color: #6b91b8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.loan-table button:hover {
+  background-color: #0056b3;
+}
+
+.home-container h2 {
+  color: #333;
+  font-size: 28px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.last-login {
+  font-size: 14px;
+  text-align: center; /* Center the last login text */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

@@ -1,6 +1,6 @@
 // CreditForm.js
 import React, { useState, useEffect } from "react";
-import "../HomePage/HomePage.css";
+import "./UserInfoForm.css"; // Updated CSS file
 
 function LoanApplication() {
   const [formData, setFormData] = useState({ newEmail: "", newPassword: "" });
@@ -66,10 +66,9 @@ function LoanApplication() {
   }, []);
 
   return (
-    <div className="credit-form">
+    <div className="user-info-form"> {/* Updated class name */}
       <h2>User Info</h2>
       <form onSubmit={handleSubmit}>
-        {/* General Information */}
         <label>
           Email:
           <input
