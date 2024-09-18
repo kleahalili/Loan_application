@@ -35,10 +35,10 @@ const HomePage = () => {
         // Sort loan applications to prioritize "Applied" and "Documents Requested" statuses
         const sortedData = data.sort((a, b) => {
           const statusOrder = {
-            "Applied": 1,
+            Applied: 1,
             "Documents Requested": 2,
-            "Approved": 3,
-            "Rejected": 4,
+            Approved: 3,
+            Rejected: 4,
           };
 
           return (statusOrder[a.applicationStatus] || 5) - (statusOrder[b.applicationStatus] || 5);

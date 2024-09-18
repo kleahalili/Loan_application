@@ -10,7 +10,7 @@ function LoanApplication() {
     dateOfBirth: "",
     placeOfBirth: "",
     emailAddress: "",
-    phoneNumber: "",
+    phoneNumber: "+355 ", 
     education: "Pa Arsim",
     maritalStatus: "Beqar",
     requestedAmount: "",
@@ -20,18 +20,77 @@ function LoanApplication() {
   });
 
   const [showMore, setShowMore] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+  
+    if (name === "phoneNumber") {
+      if (!value.startsWith("+355 ")) {
+        return;
+      }
+      const numericPart = value.slice(5); 
+      if (isNaN(numericPart)) {
+        return;
+      }
+    }
+
     setFormData({
       ...formData,
       [name]: value,
     });
   };
 
+  const calculateAge = (dateOfBirth) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // You can perform validation and submit to the database here
+
+
+    const birthDate = new Date(formData.dateOfBirth);
+    const currentDate = new Date();
+    const age = calculateAge(formData.dateOfBirth);
+
+    if (birthDate > currentDate) {
+      setErrorMessage("You cannot be from the future.");
+      return;
+    }
+
+    if (age < 18) {
+      setErrorMessage("You must be 18 years or older to apply for a loan.");
+      return;
+    }
+
+  
+    if (!isValidEmail(formData.emailAddress)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    
+    if (!/^\+355 \d{9}$/.test(formData.phoneNumber)) {
+      setErrorMessage("Phone number must be exactly 9 digits long after the prefix +355.");
+      return;
+    }
+
+    setErrorMessage(""); 
+
+    console.log(formData); 
     let url = "http://localhost:8080/api/v1/loan-applications";
     let token = localStorage.getItem("authToken");
 
@@ -143,13 +202,17 @@ function LoanApplication() {
           <>
             <label>
               Phone Number:
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  pattern="\+355 \d{9}"
+                  title="Phone number must be 9 digits long."
+                  required
+                />
+              </div>
             </label>
 
             <label>
@@ -236,6 +299,7 @@ function LoanApplication() {
             </div>
           </>
         )}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
   );

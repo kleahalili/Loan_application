@@ -82,19 +82,19 @@ const LoanDetailsPage = () => {
       });
 
       if (response.status === 200) {
-        setPopupMessage("Email sent successfully"); // Ensure the message is set correctly
+        setPopupMessage("Application status updated and email sent successfully"); 
         setStatusChangeCount(statusChangeCount + 1);
-        // Clear the popup message after 7 seconds
+      
         setTimeout(() => setPopupMessage(""), 7000);
       } else {
         setPopupMessage("Failed to update status.");
-        // Clear the popup message after 7 seconds
+
         setTimeout(() => setPopupMessage(""), 7000);
       }
     } catch (err) {
       console.error(err);
       setPopupMessage("An error occurred. Please try again.");
-      // Clear the popup message after 7 seconds
+
       setTimeout(() => setPopupMessage(""), 7000);
     }
   };
@@ -119,18 +119,18 @@ const LoanDetailsPage = () => {
         if (response.ok) {
           setPopupMessage("Document request sent.");
           setStatusChangeCount(statusChangeCount + 1);
-          // Clear the popup message after 7 seconds
+        
           setTimeout(() => setPopupMessage(""), 7000);
         } else {
           setPopupMessage("Failed to request document. Please try again.");
-          // Clear the popup message after 7 seconds
+  
           setTimeout(() => setPopupMessage(""), 7000);
         }
       })
       .catch((err) => {
         console.error(err);
         setPopupMessage("An error occurred. Please try again.");
-        // Clear the popup message after 7 seconds
+
         setTimeout(() => setPopupMessage(""), 7000);
       });
   };
@@ -159,19 +159,19 @@ const LoanDetailsPage = () => {
         .then((response) => {
           if (response.ok) {
             setPopupMessage("Document uploaded successfully!");
-            setStatusChangeCount(statusChangeCount + 1); // Re-fetch the loan details to update the UI
-            // Clear the popup message after 7 seconds
+            setStatusChangeCount(statusChangeCount + 1); 
+          
             setTimeout(() => setPopupMessage(""), 7000);
           } else {
             setPopupMessage("Failed to upload document. Please try again.");
-            // Clear the popup message after 7 seconds
+        
             setTimeout(() => setPopupMessage(""), 7000);
           }
         })
         .catch((err) => {
           console.error(err);
           setPopupMessage("An error occurred. Please try again.");
-          // Clear the popup message after 7 seconds
+
           setTimeout(() => setPopupMessage(""), 7000);
         });
     }
@@ -231,14 +231,14 @@ const LoanDetailsPage = () => {
                   <button onClick={() => handleStatusChange("Rejected")}>Reject</button>
                 </>
               ) : (
-                "N/A" // Display "N/A" when the application is not in a status where it can be approved or rejected
+                "N/A" 
               )}
             </td>
             <td>
               {(loanDetails.applicationStatus === "Applied" || loanDetails.applicationStatus === "Documents Requested") ? (
                 <button onClick={handleRequestDocumentUpload}>Request Document Upload</button>
               ) : (
-                "N/A" // Display "N/A" when the application is not in a status where it can be approved or rejected
+                "N/A" 
               )}
             </td>
           </tr>
