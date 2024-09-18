@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import LoanApplication from "../LoanApplication/LoanApplication";
-// import LoginRegister from "../LoginRegistration/LoginRegister";
-import ClientHomePage from "../ClientHomePage/ClientHomePage";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [lastLogin, setLastLogin] = useState("");
   const [loanApplications, setLoanApplications] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [statusChangeCount, setStatusChangeCount] = useState(0);
   const [userFullName, setUserFullName] = useState("");
-  // const [isLoanAppVisible, setIsLoanAppVisible] = useState(false); // Initial state: hidden
-  // const [showClientHomePage, setShowClientHomePage] = useState(false); // Initial state: hidden
 
   useEffect(() => {
-    // const now = new Date();
-    // const formattedDate = `${now.toLocaleDateString()}, ${now.toLocaleTimeString()}`;
-    // setLastLogin(formattedDate);
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
-    // Get applications
     let url = "http://localhost:8080/api/v1/loan-applications";
-    let token = localStorage.getItem("authToken");
     fetch(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,17 +27,30 @@ const HomePage = () => {
       .then((response) => {
         if (response.status === 200) {
           return response.json();
+        } else if (response.status === 403) {
+          navigate("/login"); // If unauthorized, redirect to login
         }
       })
       .then((data) => {
-        console.log(data);
-        setLoanApplications(data);
+        // Sort loan applications to prioritize "Applied" and "Documents Requested" statuses
+        const sortedData = data.sort((a, b) => {
+          const statusOrder = {
+            Applied: 1,
+            "Documents Requested": 2,
+            Approved: 3,
+            Rejected: 4,
+          };
+
+          return (statusOrder[a.applicationStatus] || 5) - (statusOrder[b.applicationStatus] || 5);
+        });
+
+        setLoanApplications(sortedData);
       })
       .catch((err) => {
         console.error(err);
       });
 
-    // Get user
+    // Get user info
     url = "http://localhost:8080/api/v1/auth/user";
     fetch(url, {
       headers: {
@@ -51,14 +61,13 @@ const HomePage = () => {
       .then((response) => {
         if (response.status === 200) {
           return response.json();
+        } else if (response.status === 403) {
+          navigate("/login"); // If unauthorized, redirect to login
         }
       })
       .then((data) => {
         if (data.role === "ADMIN") {
           setIsAdmin(true);
-          console.log("User esht punonjes");
-        } else {
-          console.log("User nuk esht punonjes");
         }
 
         if (data.lastLoginTime > 0) {
@@ -74,60 +83,118 @@ const HomePage = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [statusChangeCount]);
+  }, [statusChangeCount, navigate]);
 
-  const handleStatusChange = (id, status) => {
+  const handleDeleteApplication = (applicationId) => {
+    if (window.confirm("Are you sure you want to delete this application?")) {
+      let token = localStorage.getItem("authToken");
+      let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}`;
+
+      fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 204) {
+            alert("Application deleted successfully!");
+            setStatusChangeCount(statusChangeCount + 1);
+          } else {
+            alert("Failed to delete application.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred. Please try again.");
+        });
+    }
+  };
+
+  const handleDownloadDocument = (applicationId) => {
     let token = localStorage.getItem("authToken");
-    let url = `http://localhost:8080/api/v1/loan-applications/${id}?status=${status}`;
+    let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}/download-document`;
+
     fetch(url, {
-      method: "PUT",
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
-        if (response.status === 200) {
-          console.log("Status updated");
-          setStatusChangeCount(statusChangeCount + 1);
+        if (response.ok) {
+          return response.blob();
+        } else {
+          throw new Error("Failed to download document. Please try again.");
         }
       })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `document_${applicationId}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
       .catch((err) => {
-        console.error(err);
+        alert(err.message);
       });
   };
 
-  // const toggleLoanAppVisibility = () => {
-  //   setIsLoanAppVisible(!isLoanAppVisible); // Toggle visibility
-  //   setShowClientHomePage(false); // Hide client home page when toggling loan application
-  // };
+  const handleFileUpload = (applicationId, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
 
-  // const toggleClientHomePage = () => {
-  //   setShowClientHomePage(!showClientHomePage); // Toggle visibility
-  // };
+      let token = localStorage.getItem("authToken");
+      let url = `http://localhost:8080/api/v1/loan-applications/${applicationId}/upload-document`;
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("Document uploaded successfully!");
+            setStatusChangeCount(statusChangeCount + 1); // Refresh the list to show the updated document status
+          } else {
+            alert("Failed to upload document. Please try again.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred. Please try again.");
+        });
+    }
+  };
 
   return (
     <div className="home-container">
       <h2>Welcome, {userFullName}</h2>
       <main className="main-content">
-        {/* {isLoanAppVisible && <LoanApplication />}{" "} */}
-        {/* Conditionally render LoanApplication */}
-        {/* {showClientHomePage && <ClientHomePage />}{" "} */}
-        {/* Conditionally render ClientHomePage */}
-        {/* <section className="summary"> */}
-        {/* <h2>Summary</h2>
-          Display summary information here */}
-        {/* </section> */}
-
         <div className="loan-applications">
           <h2>Loan Applications</h2>
           <table className="loan-table">
             <thead>
               <tr>
                 <th>Application ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Loan Amount</th>
+                <th>Loan Duration (months)</th>
                 <th>Submit Date</th>
                 <th>Status</th>
-                <th>Actions</th>
+                {!isAdmin && <th>Upload Document</th>}
+                {!isAdmin && <th>Delete</th>}
+                {isAdmin && <th>Detailed View</th>}
+                {isAdmin && <th>Download Document</th>}
               </tr>
             </thead>
             <tbody>
@@ -135,41 +202,87 @@ const HomePage = () => {
                 loanApplications.map((application) => (
                   <tr key={application.applicationId}>
                     <td>{application.applicationId}</td>
+                    <td>{application.firstName}</td>
+                    <td>{application.lastName}</td>
+                    <td>{application.loanAmount}</td>
+                    <td>{application.loanDuration}</td>
                     <td>
                       {new Date(application.submittedAt).toLocaleDateString()}
                     </td>
                     <td>{application.applicationStatus}</td>
-                    <td>
-                      {application.applicationStatus === "Applied" && isAdmin && (
-                        <>
+                    {!isAdmin && (
+                      <>
+                        <td>
+                          {application.applicationStatus === "Documents Requested" && !application.documentUploaded ? (
+                            <>
+                              <label
+                                htmlFor={`file-upload-${application.applicationId}`}
+                                className="upload-button"
+                              >
+                                Upload Document
+                              </label>
+                              <input
+                                id={`file-upload-${application.applicationId}`}
+                                type="file"
+                                accept=".pdf, .docx"
+                                style={{ display: "none" }}
+                                onChange={(event) =>
+                                  handleFileUpload(application.applicationId, event)
+                                }
+                              />
+                            </>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                        <td>
+                          {application.applicationStatus === "Applied" ? (
+                            <button
+                              onClick={() =>
+                                handleDeleteApplication(application.applicationId)
+                              }
+                            >
+                              Delete
+                            </button>
+                          ) : (
+                            "N/A"
+                          )}
+                        </td>
+                      </>
+                    )}
+                    {isAdmin && (
+                      <td>
+                        <button
+                          onClick={() =>
+                            navigate(`/loan-details/${application.applicationId}`)
+                          }
+                        >
+                          Detailed View
+                        </button>
+                      </td>
+                    )}
+                    {isAdmin && (
+                      <td>
+                        {application.documentUploaded ? (
                           <button
                             onClick={() =>
-                              handleStatusChange(
-                                application.applicationId,
-                                "Approved"
-                              )
+                              handleDownloadDocument(application.applicationId)
                             }
                           >
-                            Approve
+                            Download Document
                           </button>
-                          <button
-                            onClick={() =>
-                              handleStatusChange(
-                                application.applicationId,
-                                "Rejected"
-                              )
-                            }
-                          >
-                            Reject
-                          </button>
-                        </>
-                      )}
-                    </td>
+                        ) : (
+                          <button disabled>No Document</button>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4">No loan applications available.</td>
+                  <td colSpan={isAdmin ? "10" : "8"}>
+                    No loan applications available.
+                  </td>
                 </tr>
               )}
             </tbody>

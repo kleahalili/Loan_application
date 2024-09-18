@@ -1,39 +1,29 @@
 import React, { useState } from "react";
 import "./LoginRegister.css";
-import { FaUser } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
-import { FaEnvelope } from "react-icons/fa";
+import logoImage from "../Assets/bkt4.jpg"; // Use the correct path to your logo
 
 const LoginRegister = ({ onSuccessfulLogin }) => {
-  const [action, setAction] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
-  // const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSuccessfulLogin = () => {
     onSuccessfulLogin();
   };
 
-  const registerLink = () => {
-    setAction("active");
-  };
-
-  const loginLink = () => {
-    setAction("");
+  const handleToggle = () => {
+    setIsRegistering(!isRegistering);
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Validate username and password
     if (!email || !password) {
       setErrorMessage("Email and password are required.");
       return;
     }
 
-    // Login request
     fetch("http://localhost:8080/api/v1/auth/login", {
       method: "POST",
       headers: {
@@ -45,13 +35,10 @@ const LoginRegister = ({ onSuccessfulLogin }) => {
         if (!response.ok) {
           setErrorMessage("Wrong email or password");
         }
-
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         handleSuccessfulLogin();
-        console.log("Login successful!");
         localStorage.setItem("authToken", data.token);
       })
       .catch((err) => {
@@ -78,13 +65,10 @@ const LoginRegister = ({ onSuccessfulLogin }) => {
         if (!response.ok) {
           setErrorMessage("Something went wrong. Please try again.");
         }
-
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         handleSuccessfulLogin();
-        console.log("Registration successful!");
         localStorage.setItem("authToken", data.token);
       })
       .catch((err) => {
@@ -93,12 +77,15 @@ const LoginRegister = ({ onSuccessfulLogin }) => {
   };
 
   return (
-    <div className={`wrapper ${action}`}>
-      <div className="form-box login">
-        <form onSubmit={handleLogin}>
-          <h1>Login</h1>
+    <div className="login-container">
+      <div className="form-box">
+        <div className="logo-container">
+          <img src={logoImage} alt="Logo" />
+        </div>
+        <h2>{isRegistering ? "Sign Up" : "Sign In"}</h2>
+        <p>{isRegistering ? "Create a new account" : "Sign in to manage all your devices"}</p>
+        <form onSubmit={isRegistering ? handleRegister : handleLogin}>
           <div className="input-box">
-            <FaUser className="icon" />
             <input
               type="email"
               placeholder="Email"
@@ -108,62 +95,6 @@ const LoginRegister = ({ onSuccessfulLogin }) => {
             />
           </div>
           <div className="input-box">
-            <FaLock className="icon" />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-            />
-          </div>
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox" /> Remember me
-            </label>
-            <a href="#">Forgot password?</a>
-          </div>
-          <button type="submit">Login</button>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          <div className="register-link">
-            <p>
-              Don't have an account?
-              <a href="#" onClick={registerLink}>
-                Register
-              </a>
-            </p>
-          </div>
-        </form>
-      </div>
-
-      <div className="form-box register">
-        <form onSubmit={handleRegister}>
-          <h1>Register</h1>
-          {/* <div className="input-box">
-            <FaUser className="icon" />
-            <input
-              type="text"
-              placeholder="Username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div> */}
-
-          <div className="input-box">
-            <FaEnvelope className="icon" />
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="input-box">
-            <FaLock className="icon" />
             <input
               type="password"
               placeholder="Password"
@@ -172,22 +103,22 @@ const LoginRegister = ({ onSuccessfulLogin }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="remember-forgot">
-            <label>
-              <input type="checkbox" /> I agree to the terms & conditions
-            </label>
-          </div>
-          <button type="submit">Register</button>
+          {!isRegistering && (
+            <div className="remember-forgot">
+              <a href="#">Forgot password?</a>
+            </div>
+          )}
+          <button type="submit">{isRegistering ? "Sign Up" : "Sign In"}</button>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
-          <div className="register-link">
-            <p>
-              Already have an account?
-              <a href="#" onClick={loginLink}>
-                Login
-              </a>
-            </p>
-          </div>
         </form>
+        <div className="register-link">
+          <p>
+            {isRegistering ? "Already have an account?" : "Don't have an account?"}
+            <a href="#" onClick={handleToggle}>
+              {isRegistering ? "Sign In" : "Sign Up"}
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

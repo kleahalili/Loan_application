@@ -1,6 +1,6 @@
 // CreditForm.js
 import React, { useState, useEffect } from "react";
-import "../HomePage/HomePage.css";
+import "./UserInfoForm.css"; // Updated CSS file
 
 function LoanApplication() {
   const [formData, setFormData] = useState({ newEmail: "", newPassword: "" });
@@ -31,7 +31,7 @@ function LoanApplication() {
           console.log("Modified");
           localStorage.removeItem("authToken");
           if (typeof window !== "undefined") {
-            window.location.href = "/"; // Replace '/' with your actual homepage URL if different
+            window.location.href = "/"; 
           }
         }
       })
@@ -41,7 +41,7 @@ function LoanApplication() {
   };
 
   useEffect(() => {
-    console.log(formData); // You can perform validation and submit to the database here
+    console.log(formData); 
     let url = "http://localhost:8080/api/v1/auth/user";
     let token = localStorage.getItem("authToken");
 
@@ -66,10 +66,9 @@ function LoanApplication() {
   }, []);
 
   return (
-    <div className="credit-form">
+    <div className="user-info-form"> {/* Updated class name */}
       <h2>User Info</h2>
       <form onSubmit={handleSubmit}>
-        {/* General Information */}
         <label>
           Email:
           <input
